@@ -15,7 +15,7 @@ class UnbounceClient
     if api_key
       @auth = { username: api_key, password: '' }
     elsif oauth_token
-      @headers = { 'Authorization' => "Bearer #{oauth_token}" }
+      @headers = { 'Authorization' => "Bearer #{oauth_token}", "Content-Type" => "application/json" }
     else
       raise ArgumentError, 'Use :api_key or :oauth_token argument'
     end
@@ -88,7 +88,7 @@ class UnbounceClient
     end
 
     def post(url, params)
-      self.class.post(url, basic_auth: @auth, headers: @headers, body: params)
+      self.class.post(url, basic_auth: @auth, headers: @headers, body: params.to_json)
     end
 
     def parse(response)
